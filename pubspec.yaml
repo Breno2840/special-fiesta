@@ -10,6 +10,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  # Dependências do Noctra TV
+  video_player: ^2.8.2
+  shared_preferences: ^2.2.2
+  http: ^1.1.2
 
 dev_dependencies:
   flutter_test:

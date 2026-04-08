@@ -1,0 +1,39 @@
+name: Build Manual (Debug)
+
+on:
+  # O workflow_dispatch é o que permite que você clique no botão 
+  # "Run workflow" lá na aba Actions do GitHub para rodar manualmente
+  workflow_dispatch: 
+
+jobs:
+  build:
+    name: Build Android APK
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Clonar o repositório
+        uses: actions/checkout@v4
+
+      - name: ☕ Configurar o Java (Necessário para o Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: 🐦 Configurar o Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true # Ajuda a deixar os próximos builds mais rápidos
+
+      - name: 📦 Instalar as dependências
+        run: flutter pub get
+
+      - name: 🛠️ Construir o APK em modo Debug
+        run: flutter build apk --debug
+
+      - name: 📤 Disponibilizar o APK para download
+        uses: actions/upload-artifact@v4
+        with:
+          name: noctratv-debug-apk
+          path: build/app/outputs/flutter-apk/app-debug.apk
